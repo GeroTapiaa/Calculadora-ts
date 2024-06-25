@@ -1,14 +1,16 @@
+import { useReducer } from "react"
 import { MenuItem } from "./components/MenuItem"
 import { OrderContent } from "./components/OrderContent"
 import { OrderTotals } from "./components/OrderTotals"
 import { Propina } from "./components/Propina"
 import { menuItems } from "./data/db"
-import { useOrder } from "./hooks/useOrder"
+
+import { initialState, orderReducer } from "./reducers/order-reducer"
 
 
 function App() {
 
-  const { order ,addItem , deleteItem,tip,setTip, placeOrder} = useOrder()
+  const [state, dispatch] = useReducer (orderReducer , initialState)
   return (
     <>
       <header className="bg-teal-400 py-5">
@@ -25,34 +27,34 @@ function App() {
               <MenuItem
                 key={item.id}
                 item={item}
-                addItem={addItem}
+                dispatch={dispatch}
               />
             ))}
           </div>
         </div>
         <div className="border border-dashed border-slate-300 rounded-lg p-5 space-y-10">
-          {order.length > 0 ?  (
+          {state.order.length > 0 ? (
             <>
-            <OrderContent
-            order={order}
-            deleteItem={deleteItem}
-          />
+              <OrderContent
+                order={state.order}
+                dispatch={dispatch}
+              />
 
-          <Propina
-            setTip={setTip}
-            tip={tip}
-          />
-          <OrderTotals
-            order={order}
-            tip={tip}
-            placeOrder={placeOrder}
-          />
-            
+              <Propina
+                dispatch={dispatch}
+                tip={state.tip}
+              />
+              <OrderTotals
+                order={state.order}
+                tip={state.tip}
+                dispatch={dispatch}
+              />
+
             </>
           ) : (
             <p className="text-center"> la orden esta vacia</p>
           )}
-          
+
 
         </div>
       </main>

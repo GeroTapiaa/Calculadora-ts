@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
+import { OrderActions } from "../reducers/order-reducer"
 
 
 const tipOptions = [
@@ -19,10 +20,10 @@ const tipOptions = [
     },
   ]
   type PropinaProps = {
-    setTip: Dispatch<SetStateAction<number>>
+    dispatch: React.Dispatch<OrderActions>
     tip:number
   }
-export const Propina = ({setTip, tip} :  PropinaProps) => {
+export const Propina = ({dispatch, tip} :  PropinaProps) => {
   return (
     <div>
         <h3 className="font-black text-3xl">Propina:</h3>
@@ -31,12 +32,12 @@ export const Propina = ({setTip, tip} :  PropinaProps) => {
             {tipOptions.map(tipOptions => (
                 <div key={tipOptions.id} className=" gap-2 flex  ">
                         <label htmlFor={tipOptions.id}>{tipOptions.label}</label>
-                        <input type="" 
+                        <input 
                             id={tipOptions.id}
                             type="radio"
                             name="tip"
                             value={tipOptions.value}
-                            onChange={e => setTip(+e.target.value)}
+                            onChange={e => dispatch({type: 'add-tip', payload: {value : +e.target.value}})}
                             checked={tipOptions.value === tip}
                         />
                 </div>
